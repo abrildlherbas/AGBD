@@ -21,3 +21,8 @@ SELECT s.first_name,s.last_name,a.address,c.city ,co.country FROM staff s
 INNER JOIN address a ON s.address_id = a.address_id
 INNER JOIN city c ON a.city_id= c.city_id
 INNER JOIN country co ON c.country_id = co.country_id
+
+ejercicio 4:
+SELECT max (return_date), min (return_date), f.title FROM film f
+INNER JOIN inventory i ON f.film_id= i.film_id
+INNER JOIN rental r ON i.inventory_id= r.inventory_id
