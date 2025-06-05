@@ -7,14 +7,6 @@ email VARCHAR(50) NOT NULL,
 FOREIGN KEY (address_id) REFERENCES address(address_id)
 );
 
-CREATE TABLE metodos_pago(
-metodos_id INTEGER PRIMARY KEY AUTOINCREMENT,
-pago_name VARCHAR(15) NOT NULL, ---referencio que metodo quiere elegir (mp, tarjeta credito o debito)
-employees_id INTEGER NOT NULL,
-payment_id INTEGER NOT NULL,
-FOREIGN KEY (employees_id) REFERENCES employees(employees_id),
-FOREIGN KEY (payment_id) REFERENCES payment(payment_id));
-
 
 CREATE TABLE payment (
 payment_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,12 +41,15 @@ drinks_id INTEGER PRIMARY KEY AUTOINCREMENT,
 drinks_name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE category (
-category_id INTEGER PRIMARY KEY AUTOINCREMENT,
-meals_id INTEGER NOT NULL, 
-drinks_id INTEGER NOT NULL,
-FOREIGN KEY (drinks_id) REFERENCES drinks(drinks_id),
-FOREIGN KEY (meals_id) REFERENCES meals(meals_id)
+CREATE TABLE "category" (
+	"category_id"	INTEGER,
+	"meals_id"	INTEGER NOT NULL,
+	"drinks_id"	INTEGER NOT NULL,
+	"meals_cat"	INTEGER NOT NULL,
+	"drinks_cat"	INTEGER NOT NULL,
+	FOREIGN KEY(meals_id) REFERENCES "meals"(meals_id),
+	FOREIGN KEY(drinks_id) REFERENCES "drinks"(drinks_id),
+	PRIMARY KEY("category_id" AUTOINCREMENT)
 );
 
 CREATE TABLE meals (
@@ -122,3 +117,53 @@ VALUES (1,23,'Mercado pago'),
 (9,23,'Efectivo'),
 (10,23,'Tarjeta de credito'),
 (11,23,'Tarjeta de debito'),
+
+//
+INSERT INTO drinks (drinks_id,drinks_name)
+VALUES (1,'agua'),
+(2,'Coca Cola'),
+(3,'Sprite'),
+(4,'Fanta'),
+(5,'Agua saborizada'),
+(6,'Agua con gas'),
+(7,'Limonada'),
+(8,'Cerveza'),
+(9,'Caipirinha'),
+
+//
+INSERT INTO category (meals_id,drinks_id,meals_cat,drinks_cat)
+VALUES (1,1,'Pasta','Agua'),
+(2,2,'Plato principal','Gaseosas'),
+(3,3,'Minuta','Gaseosas'),
+(4,4,'Minuta','Gaseosas'),
+(5,5,'Minuta','Jugos'),
+(6,6,'Guarniciones','Agua'),
+(7,7,'Pizzas','Jugos'),
+(8,8,'Pizzas','Bebidas Alcoholicas'),
+(9,9,'Especial de la Casa','Bebidas Alcoholicas');
+
+//
+INSERT INTO meals(meals_name, price, payment_id)
+VALUES('Fideos con Bolognesa', 11000, 2), 
+('Risoto', 9500, 3),
+('Milanesa (pollo/carne) a la Napolitana', 17000, 4),
+('Hamburguesa completa con papas', 15000, 5), 
+('Empanadas (variedad)', 1200, 6 ), 
+('Porcion de papas', 5500, 1), 
+('Pizza Muzzarella', 8000, 2), 
+('Pizza Fugazzata', 9500, 3), 
+('BurgerPizza (especial de la Casa)', 19000, 4)
+
+/ACTUALIZAR DATOS/
+SELECT employees_id, first_name, last_name FROM employees
+WHERE first_name IN ('Federico', 'Tomas', 'Julian'); 
+UPDATE employees set first_name = 'Eduardo', last_name = 'Basille' WHERE employees_id = 1;
+UPDATE employees set first_name = 'Marcela', last_name = 'Gleiser' WHERE employees_id = 2;
+UPDATE employees set first_name = 'Diego', last_name = 'Lopez' WHERE employees_id = 3;
+
+/BORRAR DATOS/
+DELETE FROM customers WHERE customer_id IN (8, 9, 10);
+
+/INNER JOIN/
+SELECT m.meals_name, m.price, p.payment_id FROM meals m 
+INNER JOIN payment p ON m.meals_id = p.payment_id
