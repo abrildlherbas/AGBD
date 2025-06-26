@@ -167,3 +167,9 @@ DELETE FROM customers WHERE customer_id IN (8, 9, 10);
 /INNER JOIN/
 SELECT m.meals_name, m.price, p.payment_id FROM meals m 
 INNER JOIN payment p ON m.meals_id = p.payment_id
+
+//
+SELECT c.meals_cat, m.meals_name, m.price, p.payment FROM meals m 
+INNER JOIN payment p on p.payment_id = m.payment_id
+INNER JOIN category c on c.meals_id = m.meals_id
+
